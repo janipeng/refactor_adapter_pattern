@@ -1,10 +1,12 @@
 package refactor.adapter.xml;
 
+import org.w3c.dom.Element;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class TagNode {
+public class TagNode implements ITagNode {
 	private String name = "";
 	private StringBuffer attributes;
 	private List children;
@@ -15,11 +17,13 @@ public class TagNode {
 		attributes = new StringBuffer("");
 	}
 
-	public void add(TagNode childNode) {
+	@Override
+	public void appendChild(ITagNode childNode) {
 		children().add(childNode);
 	}
 
-	public void addAttribute(String attribute, String value) {
+	@Override
+	public void setAttribute(String attribute, String value) {
 		attributes.append(" ");
 		attributes.append(attribute);
 		attributes.append("='");
@@ -27,14 +31,26 @@ public class TagNode {
 		attributes.append("'");
 	}
 
+	@Override
 	public void addValue(String value) {
 		this.value = value;
 	}
 
+	@Override
 	public List children() {
 		if (children == null)
 			children = new ArrayList();
 		return children;
+	}
+
+	@Override
+	public Element getElement() {
+		return null;
+	}
+
+	@Override
+	public ITagNode newNode(String child) {
+		return new TagNode(child);
 	}
 
 	public String toString() {
